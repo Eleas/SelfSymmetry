@@ -1,6 +1,6 @@
 # Self-Symmetry
 
-![image](https://github.com/user-attachments/assets/5e0215d8-b7db-41b0-b2c1-fa486764bfcf)
+![image](https://github.com/user-attachments/assets/7901c544-a931-4d56-86e1-8e0f1a98bde1)
 
 ## What this is
 
