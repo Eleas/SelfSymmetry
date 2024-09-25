@@ -1,4 +1,7 @@
-# SelfSymmetry
+# Self-Symmetry
+
+![image](https://github.com/user-attachments/assets/5e0215d8-b7db-41b0-b2c1-fa486764bfcf)
+
 ## What this is
 
 See, I was playing around with fractals the other day. I showed my son the Sierpinski triangle, and that got things 
