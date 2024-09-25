@@ -8,7 +8,10 @@ See, I was playing around with fractals the other day. I showed my son the Sierp
 rolling. The result is this little program, which draws the Sierpinski triangle: a recursive subdivision of triangles
 into four more triangles, all the way down to the smallest displayable size.
 
-Oh, and you can also rotate the image using the arrow keys. 
+Oh, and you can also rotate the image using the arrow keys.
+
+Oh, right. It displays by use of the [OLC PixelGameEngine](https://github.com/OneLoneCoder/olcPixelGameEngine), 
+created and maintained by the inestimable [Javidx9](https://github.com/OneLoneCoder). Try it out, it's brilliant.
 
 ## Optimizations
 
