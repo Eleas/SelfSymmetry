@@ -135,7 +135,7 @@ void Sierpinski::DrawSierpinski(const Point top, const Point bottomLeft, const P
 	}
 }
 
-Point Sierpinski::RotatePoint(Point p, const double angleDegrees) {
+Point Sierpinski::RotatePoint(Point p, const double angleDegrees) const {
 	double angleRadians = angleDegrees * PI / 180.0;
 	double s = sin(angleRadians);
 	double c = cos(angleRadians);
