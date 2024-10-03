@@ -114,19 +114,19 @@ void Sierpinski::DrawSierpinski(const Point top, const Point bottomLeft, const P
 	auto fillColor = colorRamp[static_cast<int16_t>(height) % 16];
 	auto heightNextTriangle = height / 2; // Termination clause for recursion.
 
-	// Fill with background color.
-	_pge->FillTriangle(top.AsVi2d(), bottomLeft.AsVi2d(), bottomRight.AsVi2d(), fillColor);
-
-	// Then draw outlines.
-	_pge->DrawLine(top.AsVi2d(), bottomLeft.AsVi2d(), outlineColor);
-	_pge->DrawLine(top.AsVi2d(), bottomRight.AsVi2d(), outlineColor);
-	_pge->DrawLine(bottomLeft.AsVi2d(), bottomRight.AsVi2d(), outlineColor);
-
 	// New triangle.
 	Point midLeft = Mid(top, bottomLeft);
 	Point midRight = Mid(top, bottomRight);
 	Point midBottom = Mid(bottomLeft, bottomRight);
 	Point center = Mid(midLeft, midRight);
+
+	// Fill middle triangle with background color.
+	_pge->FillTriangle(midLeft.AsVi2d(), midRight.AsVi2d(), midBottom.AsVi2d(), fillColor);
+
+	// Then draw outlines.
+	_pge->DrawLine(top.AsVi2d(), bottomLeft.AsVi2d(), outlineColor);
+	_pge->DrawLine(top.AsVi2d(), bottomRight.AsVi2d(), outlineColor);
+	_pge->DrawLine(bottomLeft.AsVi2d(), bottomRight.AsVi2d(), outlineColor);
 
 	if (heightNextTriangle > 5) { // How to end recursion.
 		DrawSierpinski(top, midLeft, midRight, heightNextTriangle, outlineColor);
@@ -157,7 +157,7 @@ Point Sierpinski::RotatePoint(Point p, const double angleDegrees) {
 
 /*
 	Permission is hereby granted, free of charge, to any person obtaining a
-	copy of this software and associated documentation files (the ìSoftwareî),
+	copy of this software and associated documentation files (the ‚ÄúSoftware‚Äù),
 	to deal in the Software without restriction, including without limitation
 	the rights to use, copy, modify, merge, publish, distribute, sublicense,
 	and/or sell copies of the Software, and to permit persons to whom the
@@ -166,7 +166,7 @@ Point Sierpinski::RotatePoint(Point p, const double angleDegrees) {
 	The above copyright notice and this permission notice shall be included
 	in all copies or substantial portions of the Software.
 
-	THE SOFTWARE IS PROVIDED ìAS ISî, WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	THE SOFTWARE IS PROVIDED ‚ÄúAS IS‚Äù, WITHOUT WARRANTY OF ANY KIND, EXPRESS
 	OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 	THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
