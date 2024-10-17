@@ -130,7 +130,12 @@ inline void Sierpinski::CreateMaxSizedTriangle(const double margin) {
 /// Entrypoint for the DrawSierpinski method.
 /// </summary>
 void Sierpinski::Draw() {
-	DrawSierpinski(_top, _bottomLeft, _bottomRight, _height, 1.0, olc::WHITE);
+	DrawSierpinski(_top, 
+		_bottomLeft, 
+		_bottomRight, 
+		_height, 
+		1.0, 
+		olc::WHITE);
 }
 
 /// <summary>

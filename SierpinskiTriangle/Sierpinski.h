@@ -6,7 +6,9 @@
 class Sierpinski
 {
 public:
-	Sierpinski(olc::PixelGameEngine* pge = nullptr, const double zoomSpeed = 0.1, const double rotationSpeed = 1.0);
+	Sierpinski(olc::PixelGameEngine* pge = nullptr, 
+		const double zoomSpeed = 0.1, 
+		const double rotationSpeed = 1.0);
 	void InitValues();
 	void Draw();
 	void RotateCW();
