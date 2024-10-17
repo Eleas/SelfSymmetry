@@ -53,7 +53,7 @@ private:
 	void CreateMaxSizedTriangle(const double margin = 0);
 	void RotateTriangle(const double angle);
 	Point AsPoint(const olc::vi2d position) const;
-	Point RotatePoint(Point p, const double angleDegrees);
+	Point RotatePoint(Point p, const double angleDegrees) const;
 };
 
 /*
