@@ -6,7 +6,7 @@
 class Sierpinski
 {
 public:
-	Sierpinski(olc::PixelGameEngine* pge = nullptr);
+	Sierpinski(olc::PixelGameEngine* pge = nullptr, const double zoomSpeed = 0.1, const double rotationSpeed = 1.0);
 	void InitValues();
 	void Draw();
 	void RotateCW();
@@ -17,6 +17,8 @@ public:
 private:
 	// Fields and constants.
 	const double PI = 3.14159266535;
+	const double _zoomSpeed;
+	const double _rotationSpeed;
 	Point _top = { 0.0, 0.0 };
 	Point _bottomLeft = { 0.0, 0.0 };
 	Point _bottomRight = { 0.0, 0.0 };
@@ -28,6 +30,14 @@ private:
 private:
 	// Color ramp.
 	olc::Pixel colorRamp[16] = {
+	olc::Pixel(35, 200, 215),
+	olc::VERY_DARK_GREEN,
+	olc::CYAN,
+	olc::DARK_CYAN,
+	olc::VERY_DARK_CYAN,
+	olc::Pixel(5, 20, 215),
+	olc::VERY_DARK_MAGENTA,
+	olc::DARK_CYAN,
 	olc::DARK_GREEN,
 	olc::VERY_DARK_GREY,
 	olc::RED,
@@ -35,22 +45,20 @@ private:
 	olc::DARK_RED,
 	olc::VERY_DARK_RED,
 	olc::DARK_YELLOW,
-	olc::VERY_DARK_YELLOW,
-	olc::GREEN,
-	olc::VERY_DARK_GREEN,
-	olc::CYAN,
-	olc::DARK_CYAN,
-	olc::VERY_DARK_CYAN,
-	olc::BLUE,
-	olc::VERY_DARK_MAGENTA,
-	olc::DARK_CYAN
+	olc::VERY_DARK_YELLOW
 	};
 
 private:
 	// Methods and functions
 	inline static constexpr olc::vi2d Mid(const olc::vi2d p1, const olc::vi2d p2);
 	inline static constexpr Point Mid(const Point p1, const Point p2);
-	void DrawSierpinski (const Point top, const Point bottomLeft, const Point bottomRight, const double height, const double zoomFactor, const olc::Pixel outlineColor = olc::WHITE);
+	void DrawSierpinski (const Point top, 
+		const Point bottomLeft, 
+		const Point bottomRight, 
+		const double height, 
+		const double zoomFactor, 
+		const olc::Pixel outlineColor = olc::WHITE,
+		const int iterationCount = 0);
 	inline static constexpr float TriangleRatio();
 	void CreateMaxSizedTriangle(const double margin = 0);
 	void RotateTriangle(const double angle);

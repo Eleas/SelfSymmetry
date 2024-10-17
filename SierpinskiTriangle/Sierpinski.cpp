@@ -1,8 +1,13 @@
 #include "Sierpinski.h"
 #include "Point.h"
 
-Sierpinski::Sierpinski(olc::PixelGameEngine* pge)
-	: _height(0), _pge(pge) {
+Sierpinski::Sierpinski(olc::PixelGameEngine* pge, 
+	const double zoomSpeed, 
+	const double rotationSpeed)
+	: _height(0), 
+	_pge(pge), 
+	_zoomSpeed(zoomSpeed), 
+	_rotationSpeed(rotationSpeed) {
 	if (pge != nullptr) {
 		CreateMaxSizedTriangle();
 		InitValues();
@@ -13,22 +18,28 @@ Sierpinski::Sierpinski(olc::PixelGameEngine* pge)
 /// Adds rotation in rightward direction.
 /// </summary>
 void Sierpinski::RotateCW() {
-	RotateTriangle(1.0);
+	RotateTriangle(_rotationSpeed);
 }
 
 /// <summary>
 /// Adds rotation in leftward direction.
 /// </summary>
 void Sierpinski::RotateCCW() {
-	RotateTriangle(-1.0);
+	RotateTriangle(-_rotationSpeed);
 }
 
+/// <summary>
+/// Increases magnification.
+/// </summary>
 void Sierpinski::ZoomIn() {
-	ZoomTriangle(1.00 + 0.1);
+	ZoomTriangle(1.00 + _zoomSpeed);
 }
 
+/// <summary>
+/// Decreases magnification.
+/// </summary>
 void Sierpinski::ZoomOut() {
-	ZoomTriangle(1.0 - 0.1);
+	ZoomTriangle(1.0 - _zoomSpeed);
 }
 
 void Sierpinski::ZoomTriangle(const double zoomFactor) {
@@ -36,6 +47,7 @@ void Sierpinski::ZoomTriangle(const double zoomFactor) {
 	_top = _center + (_top - _center) * zoomFactor;
 	_bottomRight = _center + (_bottomRight - _center) * zoomFactor;
 	_bottomLeft = _center + (_bottomLeft - _center) * zoomFactor;
+	_height *= zoomFactor;
 	_pge->Clear(olc::BLACK);
 	Draw();
 }
@@ -50,7 +62,8 @@ void Sierpinski::RotateTriangle(const double angle) {
 
 Point Sierpinski::AsPoint(const olc::vi2d position) const
 {
-	return { static_cast<double>(position.x), static_cast<double>(position.y) };
+	return { static_cast<double>(position.x), 
+		static_cast<double>(position.y) };
 }
 
 /// <summary>
@@ -64,7 +77,8 @@ inline void Sierpinski::InitValues() {
 }
 
 // Finds midpoint on imaginary line between two coordinates.
-inline constexpr olc::vi2d Sierpinski::Mid(const olc::vi2d p1, const olc::vi2d p2)
+inline constexpr olc::vi2d Sierpinski::Mid(const olc::vi2d p1, 
+	const olc::vi2d p2)
 {
 	return p1.lerp(p2, 0.5f);
 }
@@ -102,7 +116,9 @@ inline void Sierpinski::CreateMaxSizedTriangle(const double margin) {
 	}
 
 	// Set the triangle's vertices
-	_top = { static_cast<double>(_pge->ScreenWidth() / 2), static_cast<double>(margin) }; // Top is centered horizontally
+	_top = { static_cast<double>(_pge->ScreenWidth() / 2),
+		static_cast<double>(margin) }; // Top is centered horizontally
+
 	_bottomLeft = { (_pge->ScreenWidth() - maxBase) / 2, margin + maxHeight };
 	_bottomRight = { (_pge->ScreenWidth() + maxBase) / 2, margin + maxHeight };
 
@@ -126,9 +142,15 @@ void Sierpinski::Draw() {
 /// <param name="bottomRight">Unambiguous.</param>
 /// <param name="height">How tall the triangle is, or ought to be.</param>
 /// <param name="outlineColor">What color the outline should be in.</param>
-void Sierpinski::DrawSierpinski(const Point top, const Point bottomLeft, const Point bottomRight, const double height, const double zoomFactor, const olc::Pixel outlineColor)
+void Sierpinski::DrawSierpinski(const Point top, 
+	const Point bottomLeft, 
+	const Point bottomRight, 
+	const double height, 
+	const double zoomFactor, 
+	const olc::Pixel outlineColor,
+	const int iterationCount)
 {
-	auto fillColor = colorRamp[static_cast<int16_t>(height) % 16];
+	auto fillColor = colorRamp[iterationCount % 16];
 	auto heightNextTriangle = height / 2; // Termination clause for recursion.
 
 	// New triangle midpoints (without zoom)
@@ -138,7 +160,10 @@ void Sierpinski::DrawSierpinski(const Point top, const Point bottomLeft, const P
 	Point center = Mid(midLeft, midRight);
 
 	// Fill middle triangle with background color.
-	_pge->FillTriangle(midLeft.AsVi2d(), midRight.AsVi2d(), midBottom.AsVi2d(), fillColor);
+	_pge->FillTriangle(midLeft.AsVi2d(), 
+		midRight.AsVi2d(),
+		midBottom.AsVi2d(), 
+		fillColor);
 
 	// Then draw outlines.
 	_pge->DrawLine(top.AsVi2d(), bottomLeft.AsVi2d(), outlineColor);
@@ -146,9 +171,27 @@ void Sierpinski::DrawSierpinski(const Point top, const Point bottomLeft, const P
 	_pge->DrawLine(bottomLeft.AsVi2d(), bottomRight.AsVi2d(), outlineColor);
 
 	if (heightNextTriangle > 5) { // How to end recursion.
-		DrawSierpinski(top, midLeft, midRight, heightNextTriangle, zoomFactor, outlineColor);
-		DrawSierpinski(midLeft, bottomLeft, midBottom, heightNextTriangle, zoomFactor, outlineColor);
-		DrawSierpinski(midRight, midBottom, bottomRight, heightNextTriangle, zoomFactor, outlineColor);
+		DrawSierpinski(top, 
+			midLeft, 
+			midRight, 
+			heightNextTriangle, 
+			zoomFactor, 
+			outlineColor, 
+			iterationCount+1);
+		DrawSierpinski(midLeft, 
+			bottomLeft, 
+			midBottom, 
+			heightNextTriangle, 
+			zoomFactor, 
+			outlineColor, 
+			iterationCount+1);
+		DrawSierpinski(midRight, 
+			midBottom, 
+			bottomRight, 
+			heightNextTriangle, 
+			zoomFactor, 
+			outlineColor, 
+			iterationCount+1);
 	}
 }
 
