@@ -23,6 +23,23 @@ void Sierpinski::RotateCCW() {
 	RotateTriangle(-1.0);
 }
 
+void Sierpinski::ZoomIn() {
+	ZoomTriangle(1.00 + 0.1);
+}
+
+void Sierpinski::ZoomOut() {
+	ZoomTriangle(1.0 - 0.1);
+}
+
+void Sierpinski::ZoomTriangle(const double zoomFactor) {
+	// Now apply zoom relative to the center (_center)
+	_top = _center + (_top - _center) * zoomFactor;
+	_bottomRight = _center + (_bottomRight - _center) * zoomFactor;
+	_bottomLeft = _center + (_bottomLeft - _center) * zoomFactor;
+	_pge->Clear(olc::BLACK);
+	Draw();
+}
+
 void Sierpinski::RotateTriangle(const double angle) {
 	_top = RotatePoint(_top, angle);
 	_bottomLeft = RotatePoint(_bottomLeft, angle);
@@ -97,7 +114,7 @@ inline void Sierpinski::CreateMaxSizedTriangle(const double margin) {
 /// Entrypoint for the DrawSierpinski method.
 /// </summary>
 void Sierpinski::Draw() {
-	DrawSierpinski(_top, _bottomLeft, _bottomRight, _height, olc::WHITE);
+	DrawSierpinski(_top, _bottomLeft, _bottomRight, _height, 1.0, olc::WHITE);
 }
 
 /// <summary>
@@ -109,12 +126,12 @@ void Sierpinski::Draw() {
 /// <param name="bottomRight">Unambiguous.</param>
 /// <param name="height">How tall the triangle is, or ought to be.</param>
 /// <param name="outlineColor">What color the outline should be in.</param>
-void Sierpinski::DrawSierpinski(const Point top, const Point bottomLeft, const Point bottomRight, const double height, const olc::Pixel outlineColor)
+void Sierpinski::DrawSierpinski(const Point top, const Point bottomLeft, const Point bottomRight, const double height, const double zoomFactor, const olc::Pixel outlineColor)
 {
 	auto fillColor = colorRamp[static_cast<int16_t>(height) % 16];
 	auto heightNextTriangle = height / 2; // Termination clause for recursion.
 
-	// New triangle.
+	// New triangle midpoints (without zoom)
 	Point midLeft = Mid(top, bottomLeft);
 	Point midRight = Mid(top, bottomRight);
 	Point midBottom = Mid(bottomLeft, bottomRight);
@@ -129,9 +146,9 @@ void Sierpinski::DrawSierpinski(const Point top, const Point bottomLeft, const P
 	_pge->DrawLine(bottomLeft.AsVi2d(), bottomRight.AsVi2d(), outlineColor);
 
 	if (heightNextTriangle > 5) { // How to end recursion.
-		DrawSierpinski(top, midLeft, midRight, heightNextTriangle, outlineColor);
-		DrawSierpinski(midLeft, bottomLeft, midBottom, heightNextTriangle, outlineColor);
-		DrawSierpinski(midRight, midBottom, bottomRight, heightNextTriangle, outlineColor);
+		DrawSierpinski(top, midLeft, midRight, heightNextTriangle, zoomFactor, outlineColor);
+		DrawSierpinski(midLeft, bottomLeft, midBottom, heightNextTriangle, zoomFactor, outlineColor);
+		DrawSierpinski(midRight, midBottom, bottomRight, heightNextTriangle, zoomFactor, outlineColor);
 	}
 }
 

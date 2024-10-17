@@ -11,6 +11,8 @@ public:
 	void Draw();
 	void RotateCW();
 	void RotateCCW();
+	void ZoomIn();
+	void ZoomOut();
 
 private:
 	// Fields and constants.
@@ -48,10 +50,11 @@ private:
 	// Methods and functions
 	inline static constexpr olc::vi2d Mid(const olc::vi2d p1, const olc::vi2d p2);
 	inline static constexpr Point Mid(const Point p1, const Point p2);
-	void DrawSierpinski (const Point top, const Point bottomLeft, const Point bottomRight, const double height, const olc::Pixel outlineColor = olc::WHITE);
+	void DrawSierpinski (const Point top, const Point bottomLeft, const Point bottomRight, const double height, const double zoomFactor, const olc::Pixel outlineColor = olc::WHITE);
 	inline static constexpr float TriangleRatio();
 	void CreateMaxSizedTriangle(const double margin = 0);
 	void RotateTriangle(const double angle);
+	void ZoomTriangle(const double zoomFactor);
 	Point AsPoint(const olc::vi2d position) const;
 	Point RotatePoint(Point p, const double angleDegrees) const;
 };

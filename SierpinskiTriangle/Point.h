@@ -1,12 +1,25 @@
 #pragma once
 struct Point
 {
-	double x;
-	double y;
+    double x;
+    double y;
 
-	inline constexpr olc::vi2d AsVi2d() const {
-		return { static_cast<int32_t>(x), static_cast<int32_t>(y) };
-	}
+    // Convert Point to olc::vi2d
+    inline constexpr olc::vi2d AsVi2d() const {
+        return { static_cast<int32_t>(x), static_cast<int32_t>(y) };
+    }
+
+    Point operator+(const Point& other) const {
+        return { x + other.x, y + other.y };
+    }
+
+    Point operator-(const Point& other) const {
+        return { x - other.x, y - other.y };
+    }
+
+    Point operator*(double scalar) const {
+        return { x * scalar, y * scalar };
+    }
 };
 
 

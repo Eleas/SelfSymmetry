@@ -34,6 +34,14 @@ public:
 			_triangle->RotateCCW();
 		}
 
+		if (GetKey(olc::DOWN).bHeld) {
+			_triangle->ZoomIn();
+		}
+
+		if (GetKey(olc::UP).bHeld) {
+			_triangle->ZoomOut();
+		}
+
 		return true;
 	}
 };
